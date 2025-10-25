@@ -1,18 +1,16 @@
-# backend/app.py
-
 import json
 import requests
-import threading  # Import the threading module for file safety
+import threading  
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from PIL import Image
 import torch
 import torchvision.transforms as transforms
 import torchvision.models as models
-import os # Import the os module
-from dotenv import load_dotenv # Import the function
+import os 
+from dotenv import load_dotenv 
 
-load_dotenv() # Load variables from .env file into environment
+load_dotenv() 
 
 # --- Configuration & Initialization ---
 app = Flask(__name__)
@@ -23,7 +21,6 @@ APP_ID = os.getenv("EDAMAM_APP_ID")
 APP_KEY = os.getenv("EDAMAM_APP_KEY")
 
 
-# --- Database & Cache Setup ---
 # Define the path to your local database
 DB_FILE_PATH = 'data/nutrition_db.json'
 # Create a lock to prevent errors when writing to the file simultaneously
@@ -56,7 +53,7 @@ preprocess = transforms.Compose([
 ])
 
 # --- Helper Function: Fetch from Edamam API ---
-# (This function is the same as before, no changes needed)
+
 def get_nutrition_data_from_api(food_name):
     """Fetches detailed nutrition data for a food name from the Edamam API."""
     if APP_ID == "EDAMAM_APP_ID" or APP_KEY == "EDAMAM_APP_KEY":
@@ -114,7 +111,7 @@ def get_nutrition_data_from_api(food_name):
         return None
 
 
-# --- Image Prediction Function (No changes needed here) ---
+# --- Image Prediction Function  ---
 def predict_image(image_file):
     img = Image.open(image_file.stream).convert('RGB')
     img_t = preprocess(img)
@@ -133,7 +130,7 @@ def predict_image(image_file):
     return predictions
 
 
-# --- Main API Endpoint (UPDATED WITH CACHING LOGIC) ---
+# --- Main API Endpoint ---
 @app.route('/api/analyze', methods=['POST'])
 def analyze():
     if 'image' not in request.files:
@@ -169,8 +166,7 @@ def analyze():
                         print(f"ERROR: Could not write to local DB file: {e}")
             else:
                 print(f"API FAILED: No nutrition data found for '{top_prediction_label}'.")
-
-        # 4. Build the response (works whether data came from cache or API)
+    
         response = {
             "predictions": predictions,
             "nutritionPer100g": nutrition_data.get("nutritionPer100g") if nutrition_data else None,
