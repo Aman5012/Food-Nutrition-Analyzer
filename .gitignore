@@ -14,3 +14,4 @@ food-nutrition-frontend/node_modules/
 food-nutrition-frontend/dist/
 food-nutrition-frontend/.env.local
 food-nutrition-frontend/.env
+food-nutrition-frontend/.gitignore
