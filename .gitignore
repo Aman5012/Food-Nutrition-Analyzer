@@ -8,6 +8,9 @@ food-nutrition-backend/venv/
 food-nutrition-backend/__pycache__/
 food-nutrition-backend/*.pyc
 food-nutrition-backend/.env
+food-nutrition-backend/python-installer.exe
+food-nutrition-backend/get-pip.py
+food-nutrition-backend/data/nutrition_db.json
 
 # Frontend ignores
 food-nutrition-frontend/node_modules/

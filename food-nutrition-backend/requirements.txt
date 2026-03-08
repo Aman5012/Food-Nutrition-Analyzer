@@ -1,5 +1,7 @@
 flask
 flask-cors
+requests
+python-dotenv
+Pillow
 torch
 torchvision
-Pillow
