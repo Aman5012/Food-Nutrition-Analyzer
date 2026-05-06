@@ -9,8 +9,6 @@ import {
   Trash2,
   History,
   Sparkles,
-  ShieldCheck,
-  CloudOff,
 } from "lucide-react";
 import {
   PieChart,
@@ -92,20 +90,6 @@ const liveAnalyze = async (file) => {
   return res.json();
 };
 
-const mockAnalyze = async () => {
-  // Mock data for testing without a backend
-  const main = {
-    label: "Paneer Butter Masala",
-    baseNutritionPer100g: { calories: 230, protein: 9.5, carbs: 8.2, fat: 17.6, fiber: 1.2, sugar: 3.1, sodium: 420 },
-    allergens: ["Dairy", "Nuts (possible)"],
-  };
-  await new Promise((r) => setTimeout(r, 1000));
-  return {
-    predictions: [{ id: randomId(), label: main.label, confidence: 0.85 }],
-    nutritionPer100g: main.baseNutritionPer100g,
-    allergens: main.allergens,
-  };
-};
 
 // =====================
 // Main App Component
@@ -116,7 +100,6 @@ export default function FoodNutritionApp() {
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [useMock, setUseMock] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
   const [portion, setPortion] = useState(250);
 
@@ -181,7 +164,7 @@ export default function FoodNutritionApp() {
     setShowDetails(false);
 
     try {
-      const result = useMock ? await mockAnalyze() : await liveAnalyze(file);
+      const result = await liveAnalyze(file);
       setPredictions(result.predictions || []);
       setNutritionPer100g(result.nutritionPer100g || null);
       setAllergens(result.allergens || []);
@@ -229,18 +212,6 @@ export default function FoodNutritionApp() {
               Snap a photo, detect the dish, and get its full nutritional breakdown.
             </p>
           </div>
-          <button
-            onClick={() => setUseMock((v) => !v)}
-            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition border ${
-              useMock
-                ? "bg-slate-700 border-slate-600 hover:bg-slate-600"
-                : "bg-emerald-500/10 border-emerald-400/30 hover:bg-emerald-500/20"
-            }`}
-            title={useMock ? "Using mock data (no backend needed)" : "Using live API (/api/analyze)"}
-          >
-            {useMock ? <CloudOff className="w-4 h-4" /> : <ShieldCheck className="w-4 h-4" />}
-            {useMock ? "Mock Mode" : "Live API"}
-          </button>
         </div>
 
         {/* Upload + Controls */}

@@ -11,6 +11,7 @@ food-nutrition-backend/.env
 food-nutrition-backend/python-installer.exe
 food-nutrition-backend/get-pip.py
 food-nutrition-backend/data/nutrition_db.json
+food-nutrition-backend/ColabTrainingScript.py
 
 # Frontend ignores
 food-nutrition-frontend/node_modules/
